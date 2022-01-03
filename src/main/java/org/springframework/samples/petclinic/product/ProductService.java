@@ -29,13 +29,16 @@ public class ProductService {
         return productRepo.findAllProductTypes();
     }
 
-    /*@Transactional
-	public void save(Product product) throws DataAccessException {
-		//creating product
-		productRepo.save(product);		
-        
-		
-	}*/
+    
+    @Transactional
+	public void saveProduct(Product product) throws DataAccessException {
+		//Product otherProduct=product.getProductType()..getOwner().getPetwithIdDifferent(pet.getName(), pet.getId());
+        //if (StringUtils.hasLength(pet.getName()) &&  (otherPet!= null && otherPet.getId()!=pet.getId())) {            	
+        //    throw new DuplicatedPetNameException();
+       // }else
+            productRepo.save(product);                
+	}
+
     public Product save(Product p){
         return null;       
     }

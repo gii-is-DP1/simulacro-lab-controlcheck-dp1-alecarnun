@@ -17,23 +17,28 @@ public class ProductService {
         return productRepo.findAll();
     }
 
-    /*public List<Product> getProductsCheaperThan(double price) {
+    public List<Product> getProductsCheaperThan(double price) {
         return productRepo.findByPriceLessThan(price);
-    }*/
+    }
 
     public ProductType getProductType(String name) {
-        //List<ProductType> listTypes = productRepo.findAllProductTypes();
-        //return listTypes.stream().(t->t.getName().equals(name));
         return productRepo.findProductTypeByName(name);
     }
 
-    @Transactional
+    public List<ProductType> getAllProductTypes(){
+        return productRepo.findAllProductTypes();
+    }
+
+    /*@Transactional
 	public void save(Product product) throws DataAccessException {
 		//creating product
 		productRepo.save(product);		
         
 		
-	}
+	}*/
+    public Product save(Product p){
+        return null;       
+    }
 
     
 }

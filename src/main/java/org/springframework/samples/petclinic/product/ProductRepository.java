@@ -22,8 +22,9 @@ public interface ProductRepository extends CrudRepository<Product,Integer>{
  
     @Query("SELECT DISTINCT pType FROM ProductType pType WHERE pType.name = ?1")
     ProductType findProductTypeByName(String name) throws DataAccessException;
-    /*
-    @Query("SELECT p FROM ProductType p WHERE p.price < price")
-    List<Product> findByPriceLessThan(@Param("price") Double price);*/
+    
+    @Query("SELECT p FROM Product p WHERE p.price < ?1")
+    List<Product> findByPriceLessThan(double price);
+
     Product save(Product p) throws DataAccessException;
 }

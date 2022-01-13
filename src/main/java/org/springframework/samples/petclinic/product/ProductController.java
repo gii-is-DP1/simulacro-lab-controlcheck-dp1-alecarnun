@@ -1,6 +1,7 @@
 package org.springframework.samples.petclinic.product;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.validation.Valid;
 
@@ -12,70 +13,46 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 
 public class ProductController {
 
-	private static final String VIEWS_PRODUCTS_CREATE_OR_UPDATE_FORM = "products/createOrUpdateProductForm";
-
 	private final ProductService productService;
-    
 
 	@Autowired
-	public ProductController(ProductService pService) {
-		this.productService = pService;
+	public ProductController(ProductService productService){
+	this.productService = productService;
 	}
 
-	@ModelAttribute("product_types")
-	public Collection<ProductType> populateProductTypes() {
-		return this.productService.getAllProductTypes();
+	@ModelAttribute("productTypes")
+	public List<ProductType> loadProductTypes() {
+	List<ProductType> pTypes = this.productService.getAllProductTypes();
+	return pTypes;
 	}
 
-	@InitBinder("pet")
-	public void initPetBinder(WebDataBinder dataBinder) {
-        		dataBinder.setValidator(new ProductValidator());
-	}
 
 	@GetMapping(value = "/product/create")
-	public String initCreationForm(ModelMap model) {
-		Product product = new Product();
-		
-		model.put("product", product);
-		return VIEWS_PRODUCTS_CREATE_OR_UPDATE_FORM;
+	public String initNewProductForm(ModelMap model) {
+	Product product = new Product();
+	model.put("product", product);
+	return "products/createOrUpdateProductForm";
 	}
 
 	@PostMapping(value = "/product/create")
-	public String processCreationForm(@Valid Product product, BindingResult result, ModelMap model) {		
-		if (result.hasErrors()) {
-			model.put("product", product);
-			return VIEWS_PRODUCTS_CREATE_OR_UPDATE_FORM;
-		}
-		else {
-                    try{
-                    	//owner.addPet(pet);
-                    	this.productService.saveProduct(product);
-                    }catch(Exception ex){
-                        //result.rejectValue("name", "duplicate", "already exists");
-                        return VIEWS_PRODUCTS_CREATE_OR_UPDATE_FORM;
-                    }
-                    return "redirect:/product/{productId}";
-		}
+	public String processNewProductForm(@Valid Product product, BindingResult result) {
+	if (result.hasErrors()) {
+		return "products/createOrUpdateProductForm";
 	}
-
-	
-    /**
-     *
-     * @param pet
-     * @param result
-     * @param petId
-     * @param model
-     * @param owner
-     * @param model
-     * @return
-     */
+	else {
+		this.productService.save(product);
+		return "welcome";
+	}
+	}
       
     
 }

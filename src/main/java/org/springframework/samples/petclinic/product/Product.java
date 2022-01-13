@@ -8,9 +8,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
+
+import org.springframework.samples.petclinic.model.BaseEntity;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +23,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name="products")
-public class Product {
+public class Product extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +35,8 @@ public class Product {
     private String name;
 
     @Column(name = "price")
-    @NotEmpty
-    @PositiveOrZero
+    @NotNull
+    @Min(0)
     private double price;
 
     @ManyToOne
